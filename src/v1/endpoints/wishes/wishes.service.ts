@@ -37,12 +37,13 @@ export class WishesService {
     };
   }
 
-  async updateWish(wish: IWish): Promise<IResponse<Wish>> {
+  async updateWish(id: string, wish: IWish): Promise<IResponse<Wish>> {
     if (!wish) {
       return { error: 'Пожелание не указано' };
     }
 
-    const updatedWish = await this.wishModel.findOneAndUpdate(wish);
+    const existedWish = await this.wishModel.findById(id);
+    const updatedWish = await existedWish.updateOne(wish);
 
     if (!updatedWish) {
       return { error: 'Пожелание не удалось обновить' };

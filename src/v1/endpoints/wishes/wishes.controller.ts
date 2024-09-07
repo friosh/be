@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, Put, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put, Query } from '@nestjs/common';
 import { IResponse } from 'src/v1/shared/consts/response';
 import { IWish, Wish } from './wishes.schema';
 import { WishesService } from './wishes.service';
@@ -17,8 +17,11 @@ export class WishesController {
     return await this.wishSrv.createWish(body);
   }
 
-  @Put()
-  async updateWish(@Body() body: IWish): Promise<IResponse<Wish>> {
-    return await this.wishSrv.updateWish(body);
+  @Put(':id')
+  async updateWish(
+    @Param() param: any,
+    @Body() body: IWish,
+  ): Promise<IResponse<Wish>> {
+    return await this.wishSrv.updateWish(param.id, body);
   }
 }
